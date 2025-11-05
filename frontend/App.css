@@ -108,3 +108,17 @@ footer {
   from { background-position: 0; }
   to { background-position: -2000px; }
 }
+
+
+.weather-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Adds a small space between the icon and text */
+  font-size: 1.1rem;
+}
+
+/* Fix capitalization */
+#weather-info p:nth-of-type(2) {
+  text-transform: capitalize;
+}

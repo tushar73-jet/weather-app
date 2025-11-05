@@ -1,12 +1,14 @@
 import { useState } from "react";
 import "./App.css";
+// 1. Import the icons you need
+import { WiThermometer, WiStrongWind, WiHumidity, WiCloudy } from "react-icons/wi";
 
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [bgClass, setBgClass] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // 1. Add loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -18,7 +20,6 @@ function App() {
       return;
     }
 
-    // 2. Set loading and clear old data/errors
     setIsLoading(true);
     setErrorMsg("");
     setWeatherData(null);
@@ -28,7 +29,6 @@ function App() {
       const res = await fetch(`${API_URL}/weather?city=${city.trim()}`);
       const data = await res.json();
 
-      // 3. Check for errors from the API (e.g., 404 "city not found")
       if (!res.ok || data.error) {
         setErrorMsg(data.error || "Failed to fetch weather data");
         setWeatherData(null);
@@ -39,7 +39,6 @@ function App() {
       setErrorMsg("");
       setWeatherData(data);
 
-      // Set background based on weather
       const mainWeather = data.weather?.[0]?.main.toLowerCase();
       if (mainWeather.includes("cloud")) setBgClass("cloudy");
       else if (mainWeather.includes("rain") || mainWeather.includes("drizzle")) setBgClass("rainy");
@@ -53,7 +52,6 @@ function App() {
       setWeatherData(null);
       setBgClass("");
     } finally {
-      // 4. Stop loading, no matter what
       setIsLoading(false);
     }
   };
@@ -68,10 +66,9 @@ function App() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && getWeather()}
-          disabled={isLoading} // 5. Disable input while loading
+          disabled={isLoading}
         />
         <button onClick={getWeather} disabled={isLoading}>
-          {/* 6. Show loading text in button */}
           {isLoading ? "Loading..." : "Get Weather"}
         </button>
 
@@ -80,14 +77,25 @@ function App() {
         {weatherData && (
           <div id="weather-info">
             <h2>{weatherData.name}</h2>
-            <p>🌡️ Temperature: {weatherData.main?.temp}°C</p>
-            <p>🌥 Condition: {weatherData.weather?.[0]?.description}</p>
-            <p>💧 Humidity: {weatherData.main?.humidity}%</p>
-            <p>🌬 Wind Speed: {weatherData.wind?.speed} m/s</p>
             <img
               src={`https://openweathermap.org/img/wn/${weatherData.weather?.[0]?.icon}@2x.png`}
               alt="weather icon"
+              style={{ width: '120px' }} // Make icon a bit bigger
             />
+            
+            {/* 2. Use the new icons and style them */}
+            <p className="weather-detail">
+              <WiThermometer size={24} /> Temperature: {weatherData.main?.temp}°C
+            </p>
+            <p className="weather-detail">
+              <WiCloudy size={24} /> Condition: {weatherData.weather?.[0]?.description}
+            </p>
+            <p className="weather-detail">
+              <WiHumidity size={24} /> Humidity: {weatherData.main?.humidity}%
+            </p>
+            <p className="weather-detail">
+              <WiStrongWind size={24} /> Wind Speed: {weatherData.wind?.speed} m/s
+            </p>
           </div>
         )}
       </div>
