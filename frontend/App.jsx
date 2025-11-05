@@ -5,7 +5,10 @@ function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
-  const [bgClass, setBgClass] = useState(""); 
+  const [bgClass, setBgClass] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // 1. Add loading state
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const getWeather = async () => {
     if (!city || city.trim() === "") {
@@ -15,12 +18,19 @@ function App() {
       return;
     }
 
+    // 2. Set loading and clear old data/errors
+    setIsLoading(true);
+    setErrorMsg("");
+    setWeatherData(null);
+    setBgClass("");
+
     try {
-      const res = await fetch(`http://localhost:5000/weather?city=${city.trim()}`);
+      const res = await fetch(`${API_URL}/weather?city=${city.trim()}`);
       const data = await res.json();
 
-      if (data.error) {
-        setErrorMsg(data.error);
+      // 3. Check for errors from the API (e.g., 404 "city not found")
+      if (!res.ok || data.error) {
+        setErrorMsg(data.error || "Failed to fetch weather data");
         setWeatherData(null);
         setBgClass("");
         return;
@@ -39,9 +49,12 @@ function App() {
 
     } catch (err) {
       console.error("Frontend error:", err);
-      setErrorMsg("Failed to fetch weather data");
+      setErrorMsg("Failed to fetch weather data. (Check server?)");
       setWeatherData(null);
       setBgClass("");
+    } finally {
+      // 4. Stop loading, no matter what
+      setIsLoading(false);
     }
   };
 
@@ -55,8 +68,12 @@ function App() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && getWeather()}
+          disabled={isLoading} // 5. Disable input while loading
         />
-        <button onClick={getWeather}>Get Weather</button>
+        <button onClick={getWeather} disabled={isLoading}>
+          {/* 6. Show loading text in button */}
+          {isLoading ? "Loading..." : "Get Weather"}
+        </button>
 
         {errorMsg && <p id="error-msg">{errorMsg}</p>}
 
