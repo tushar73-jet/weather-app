@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 * {
   margin: 0;
@@ -8,7 +8,11 @@
 }
 
 .app {
-  background: linear-gradient(to right, #2b5876, #4e4376);
+  /* === THIS IS YOUR NEW BACKGROUND === */
+  background: #e80000;
+  background: linear-gradient(94deg, rgba(232, 0, 0, 1) 0%, rgba(199, 195, 87, 1) 100%, rgba(237, 221, 83, 1) 52%);
+  /* =================================== */
+  
   color: white;
   text-align: center;
   min-height: 100vh;
