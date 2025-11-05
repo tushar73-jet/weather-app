@@ -108,24 +108,3 @@ footer {
   from { background-position: 0; }
   to { background-position: -2000px; }
 }
-/* Add these new classes to your App.css */
-
-.app.clear {
-  background: linear-gradient(to top, #2bc0e4, #eaecc6);
-}
-
-.app.cloudy {
-  background: linear-gradient(to right, #616161, #9bc5c3);
-}
-
-.app.rainy {
-  background: linear-gradient(to top, #2c3e50, #4ca1af);
-}
-
-.app.snowy {
-  background: linear-gradient(to right, #e6dada, #274046);
-}
-
-.app.thunderstorm {
-  background: linear-gradient(to right, #141e30, #243b55);
-}
