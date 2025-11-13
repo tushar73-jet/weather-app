@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-// 1. Import the icons you need
 import { WiThermometer, WiStrongWind, WiHumidity, WiCloudy } from "react-icons/wi";
 
 function App() {
